@@ -1,70 +1,136 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title> Tic tac Toe</title>
-    <style>
+ <head>
+   <title>Tic Tac Toe</title>
 
-@import url('https://fonts.googleapis.com/css?family=Gochi+Hand|Kalam|Mali|Patrick+Hand');
-    .Square {
-        height:100px;
-        width:100px;
-        font-size:60px;
-        text-align: center;
-        font-weight: bold;
-        font-family: 'Kalam', cursive;
-    }
+   <style>
+    
 
-    body{
-      width: 550px;
-      margin: auto;
-      background: #EAF2EF;
+     body {
+         width: 550px;
+         margin: auto;
+         background: #EAF2EF;
+     }
 
-      h1{
-        font-family: 'Kalam', cursive;
-        border-bottom:1px solid black;
-      }  
-      #message{
-        font-size: 22pt;
-        font-family: 'Patrick Hand', cursive;
-      } 
-      #restart{
-        position: relative;
-        border: 1.5px solid red;
-        padding: 5px 5px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block; 
-        font-size: 20pt;
-        font-family: 'Patrick Hand', cursive;
-        text-decoration: none;
-        color:orangered;
-      }
-    </style>
-</head>
-<body onload="startGame();">
-	<h1>
-        Tic Tac Toe Game.</h1>
-<div id="message">Message here.</div>
+     h1 {
+        border-bottom: 1px solid black;
+        font-family: 'Open Sans', sans-serif;
+     }
 
-  <table border="1">
-      <tr>
-          <td class="Square" id="s1" onClick="nextMove(this)"></td>
-          <td class="Square" id="s2" onClick="nextMove(this)"></td>
-          <td class="Square" id="s3" onClick="nextMove(this)"></td>
-      </tr>
-      <tr>
-        <td class="Square"   id="s4" onClick="nextMove(this)"></td>
-        <td class="Square"   id="s5" onClick="nextMove(this)"></td>
-        <td class="Square"   id="s6" onClick="nextMove(this)"></td>
-    </tr>
-    <tr>
-      <td class="Square"    id="s7"   onClick="nextMove(this)"></td>
-      <td class="Square"    id="s8"  onClick="nextMove(this)"></td>
-      <td class="Square"    id="s9"  onClick="nextMove(this)"></td>
-    </tr>
-  </table>  
-  <a href ="javascript: startGame();" id="restart">Start Over the game!!</a>
-  <script src='main.js'></script>    
-</body>
-	
-</html>
+     .Square {
+         height: 80px;
+         width: 80px;
+         font-size: 45pt;
+         text-align: center;
+     }
+
+     #message {
+         font-size: 18pt;
+     }
+    
+     #restart {
+         font-size: 18;
+         font-family: 'Amatic SC', cursive;
+         text-decoration: none;
+         color: black;
+     }
+
+
+
+   </style>
+   </head>
+   <body onload="startGame();">
+       <h1>Tic tac toe By Lee Minho.</h1>
+       <div id="message">Message here.</div>
+       <table border="1">
+           <tr>
+               <td class="Square" id="s1" onClick="nextMove(this)"></td>
+               <td class="Square" id="s2" onClick="nextMove(this)"></td>
+               <td class="Square" id="s3" onClick="nextMove(this)"></td>
+           </tr>
+            <tr>
+                <td class="Square" id="s4" onClick="nextMove(this)"></td>
+                <td class="Square" id="s5" onClick="nextMove(this)"></td>
+                <td class="Square" id="s6" onClick="nextMove(this)"></td>
+            </tr>
+            <tr>
+                <td class="Square" id="s7" onClick="nextMove(this)"></td>
+                <td class="Square" id="s8" onClick="nextMove(this)"></td>
+                <td class="Square" id="s9" onClick="nextMove(this)"></td>
+            </tr>
+       </table>
+       <a href="javascript:startGame();" id="restart">Reset</a>
+       <script>
+           function startGame() {
+
+            for(var i = 1; i <=9; i++) {
+            clearBox(i);
+            }
+
+            document.turn = "X";
+            document.winner = null;
+            setMessage(document.turn + " get's to start.")
+            }
+
+            function setMessage(msg) {
+            document.getElementById("message").innerText = msg; 
+            }
+
+            function nextMove(square) {
+                if(document.winner !=null) {
+                setMessage(document.turn + " already won.")
+                } else if(square.innerText == '') {
+                square.innerText = document.turn;
+                switchTurn();
+                } else {
+                setMessage("Pick another square.")
+                }
+            }
+
+            function switchTurn() {
+            
+                if(checkForWinner(document.turn)) {
+                setMessage("Congrats " + document.turn + ", you won!")  
+                document.winner = document.turn;
+                }else if(document.turn == "X") {
+                    document.turn = "O";
+                    setMessage("It's " + document.turn + "'s turn.'")
+                } else {
+                    document.turn = "X";
+                    setMessage("It's " + document.turn + "'s turn.'")
+                }
+            }
+
+            function checkForWinner(move) {
+            var result = false;
+            if(checkRow(1, 2, 3, move) ||
+                checkRow(4, 5, 6, move) ||
+                checkRow(7, 8, 9, move) ||
+                checkRow(1, 4, 7, move) ||
+                checkRow(2, 5, 8, move) ||
+                checkRow(3, 6, 9, move) ||
+                checkRow(1, 5, 9, move) ||
+                checkRow(3, 5, 7, move)) {
+                result = true;   
+                }
+                return result; 
+            }
+
+            function checkRow(a, b, c, move) {
+            var result = false;
+            if (getBox(a) == move && getBox(b) == move && getBox(c) == move) {
+                result = true; 
+            }
+            return result;
+            }
+
+            function getBox(number) {
+            return document.getElementById("s" + number).innerText;  
+            }
+
+            function clearBox(number) {
+            document.getElementById("s" + number).innerText = "";
+            }
+       </script>
+   </body>
+ </html>
